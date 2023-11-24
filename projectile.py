@@ -65,3 +65,70 @@ def calculate_acceleration_x(v, k=0.0, mass=1.0):
     
     return a_x
 
+def flying_mass(initial_x_velocity, initial_y_velocity, k=0.0, mass=1.0, dt=0.1):
+    '''
+    Model a flying mass with separate x and y components of motion.
+    
+    Args:
+        initial_x_velocity (float):
+            Initial velocity in the x direction (m/s).
+        initial_y_velocity (float):
+            Initial velocity in the y direction (m/s).
+        k (float) :
+            Combined air resistance coefficient, based on F=-kv^2. 
+            Should be positive.
+            Default = 0.0  i.e. no air resistance
+        mass (float) :
+            Mass of the object. Only needed if k is not 0.
+            Default = 1.0  (kg)
+        dt (float, optional) : 
+            Time interval for each time step in seconds.
+            Default = 0.1
+    
+    Returns:
+        tuple: (time, x position, y position, x velocity, y velocity)
+    '''
+    # Fixed input values
+    gravity = -9.81  # Acceleration due to gravity (m/s^2)
+
+    # Initial values for our parameters
+    x_position = 0.0
+    y_position = 0.0
+    x_velocity = initial_x_velocity
+    y_velocity = initial_y_velocity
+    x_acceleration = 0.0
+    y_acceleration = 0.0
+    time = 0.0
+
+    # Create empty lists which we will update
+    x_positions = []
+    y_positions = []
+    x_velocities = []
+    y_velocities = []
+    times = []
+
+    # Keep looping while the object is still in motion
+    while y_position >= 0:
+        # Calculate acceleration in x and y directions separately
+        x_force = -k * x_velocity**2 if k != 0 else 0  # Air resistance affecting x-axis
+        y_force = -k * y_velocity**2 - mass * gravity if k != 0 else -mass * gravity  # Air resistance and gravity affecting y-axis
+
+        x_acceleration = x_force / mass
+        y_acceleration = y_force / mass
+
+        # Append values to lists
+        x_positions.append(x_position)
+        y_positions.append(y_position)
+        x_velocities.append(x_velocity)
+        y_velocities.append(y_velocity)
+        times.append(time)
+
+        # Update x state (position and velocity)
+        x_position, x_velocity = update_state(x_position, x_velocity, x_acceleration, dt)
+
+        # Update y state (position and velocity)
+        y_position, y_velocity = update_state(y_position, y_velocity, y_acceleration, dt)
+
+        time += dt  # Increment time
+
+    return times, x_positions, y_positions, x_velocities, y_velocities
