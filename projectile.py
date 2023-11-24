@@ -61,7 +61,7 @@ def calculate_acceleration_x(v, k=0.0, mass=1.0):
        a_x float : accelaration calculated for this time step
     '''
     force_air = -(v)*k*v**2
-    a_x = total_air/mass
+    a_x = force_air/mass
     
     return a_x
 
