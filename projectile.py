@@ -109,8 +109,8 @@ def flying_mass(initial_x_velocity, initial_y_velocity, k=0.0, mass=1.0, dt=0.1)
     # Keep looping while the object is still in motion
     while y_position >= 0:
         # Calculate acceleration in x and y directions separately
-        x_acceleration =calculate_acceleration_x(x_velocity,k,m)
-        y_acceleration =calculate_acceleration_y(y_velocity,k,m)
+        x_acceleration =calculate_acceleration_x(x_velocity,k,mass)
+        y_acceleration =calculate_acceleration_y(y_velocity,k,mass)
 
         # Append values to lists
         x_positions.append(x_position)
