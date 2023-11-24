@@ -58,12 +58,13 @@ def calculate_acceleration_x(v, k=0.0, mass=1.0):
             Mass of the falling object. Needed if k > 0.
             Default = 1.0
     Returns:
-        float : accelaration calculated for this time step
+       float : accelaration calculated for this time step
     '''
     force_air = -sign(v)*k*v**2
     a_x = total_air/mass
     
     return a_x
+
 
 def flying_mass(initial_x_velocity, initial_y_velocity, k=0.0, mass=1.0, dt=0.1):
     '''
@@ -123,12 +124,17 @@ def flying_mass(initial_x_velocity, initial_y_velocity, k=0.0, mass=1.0, dt=0.1)
         y_velocities.append(y_velocity)
         times.append(time)
 
-        # Update x state (position and velocity)
-        x_position, x_velocity = update_state(x_position, x_velocity, x_acceleration, dt)
+        # Update states by unpacking the tuple returned by update_state function
+        new_x_state = update_state(x_position, x_velocity, x_acceleration, dt)
+        new_y_state = update_state(y_position, y_velocity, y_acceleration, dt)
 
-        # Update y state (position and velocity)
-        y_position, y_velocity = update_state(y_position, y_velocity, y_acceleration, dt)
+        # Update x state
+        x_position, x_velocity = new_x_state
+
+        # Update y state
+        y_position, y_velocity = new_y_state
 
         time += dt  # Increment time
 
     return times, x_positions, y_positions, x_velocities, y_velocities
+
