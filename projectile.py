@@ -124,10 +124,10 @@ def flying_mass(initial_x_velocity, initial_y_velocity, k=0.0, mass=1.0, dt=0.1)
         new_y_state = update_state(y_position, y_velocity, y_acceleration, dt)
 
         # Update x state
-        x_position, x_velocity = new_x_state[0,1]
+        x_position, x_velocity, *_ = new_x_state
 
         # Update y state
-        y_position, y_velocity = new_y_state[0,1]
+        y_position, y_velocity, *_ = new_y_state
 
         time += dt  # Increment time
 
