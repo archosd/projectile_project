@@ -89,8 +89,6 @@ def flying_mass(initial_x_velocity, initial_y_velocity, k=0.0, mass=1.0, dt=0.1)
     Returns:
         tuple: (time, x position, y position, x velocity, y velocity)
     '''
-    # Fixed input values
-    gravity = -9.81  # Acceleration due to gravity (m/s^2)
 
     # Initial values for our parameters
     x_position = 0.0
@@ -111,11 +109,8 @@ def flying_mass(initial_x_velocity, initial_y_velocity, k=0.0, mass=1.0, dt=0.1)
     # Keep looping while the object is still in motion
     while y_position >= 0:
         # Calculate acceleration in x and y directions separately
-        x_force = -k * x_velocity**2 if k != 0 else 0  # Air resistance affecting x-axis
-        y_force = -k * y_velocity**2 - mass * gravity if k != 0 else -mass * gravity  # Air resistance and gravity affecting y-axis
-
-        x_acceleration = x_force / mass
-        y_acceleration = y_force / mass
+        x_acceleration =calculate_acceleration_x(x_velocity,k,m)
+        y_acceleration =calculate_acceleration_y(y_velocity,k,m)
 
         # Append values to lists
         x_positions.append(x_position)
@@ -129,10 +124,10 @@ def flying_mass(initial_x_velocity, initial_y_velocity, k=0.0, mass=1.0, dt=0.1)
         new_y_state = update_state(y_position, y_velocity, y_acceleration, dt)
 
         # Update x state
-        x_position, x_velocity = new_x_state
+        x_position, x_velocity = new_x_state[0,1]
 
         # Update y state
-        y_position, y_velocity = new_y_state
+        y_position, y_velocity = new_y_state[0,1]
 
         time += dt  # Increment time
 
