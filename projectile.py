@@ -35,10 +35,10 @@ def calculate_acceleration_y(v, k=0.0, mass=1.0, gravity=-9.81):
             Value for gravity to use when calculating gravitational force in m/s2.
             Default = -9.81
     Returns:
-        float : accelaration calculated for this time step
+        a_y float : accelaration calculated for this time step
     '''
     force_gravity = mass*gravity
-    force_air = -sign(v)*k*v**2
+    force_air = -(v)*k*v**2
     total_force = force_gravity + force_air
     a_y = total_force/mass
     
@@ -58,9 +58,9 @@ def calculate_acceleration_x(v, k=0.0, mass=1.0):
             Mass of the falling object. Needed if k > 0.
             Default = 1.0
     Returns:
-       float : accelaration calculated for this time step
+       a_x float : accelaration calculated for this time step
     '''
-    force_air = -sign(v)*k*v**2
+    force_air = -(v)*k*v**2
     a_x = total_air/mass
     
     return a_x
