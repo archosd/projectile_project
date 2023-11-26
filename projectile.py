@@ -66,7 +66,7 @@ def calculate_acceleration_x(v, k=0.0, mass=1.0):
     return a_x
 
 
-def flying_mass(initial_x_velocity, initial_y_velocity, k=0.0, mass=1.0, dt=0.1):
+def flying_mass(initial_x_velocity, initial_y_velocity, initial_x_position=0.0, initial_y_position = 0.0, k=0.0, mass=1.0, dt=0.1):
     '''
     Model a flying mass with separate x and y components of motion.
     
@@ -75,6 +75,12 @@ def flying_mass(initial_x_velocity, initial_y_velocity, k=0.0, mass=1.0, dt=0.1)
             Initial velocity in the x direction (m/s).
         initial_y_velocity (float):
             Initial velocity in the y direction (m/s).
+        initial_x_position (float):
+            Initial position in x (m).
+            Default = 0m.
+        initial_y_position (float):
+            Initial position in y (m).
+            Default = 0m.
         k (float) :
             Combined air resistance coefficient, based on F=-kv^2. 
             Should be positive.
@@ -91,8 +97,8 @@ def flying_mass(initial_x_velocity, initial_y_velocity, k=0.0, mass=1.0, dt=0.1)
     '''
 
     # Initial values for our parameters
-    x_position = 0.0
-    y_position = 0.0
+    x_position = initial_x_position
+    y_position = initial_y_position
     x_velocity = initial_x_velocity
     y_velocity = initial_y_velocity
     x_acceleration = 0.0
@@ -120,16 +126,14 @@ def flying_mass(initial_x_velocity, initial_y_velocity, k=0.0, mass=1.0, dt=0.1)
         times.append(time)
 
         # Update states by unpacking the tuple returned by update_state function
-        new_x_state = update_state(x_position, x_velocity, x_acceleration, dt)
-        new_y_state = update_state(y_position, y_velocity, y_acceleration, dt)
+        new_x_state = update_state(time,x_position, x_velocity, x_acceleration, dt)
+        new_y_state = update_state(time,y_position, y_velocity, y_acceleration, dt)
 
         # Update x state
-        x_position, x_velocity, *_ = new_x_state
+        time, x_position, x_velocity = new_x_state
 
         # Update y state
-        y_position, y_velocity, *_ = new_y_state
-
-        time += dt  # Increment time
+        time, y_position, y_velocity = new_y_state
 
     return times, x_positions, y_positions, x_velocities, y_velocities
 
